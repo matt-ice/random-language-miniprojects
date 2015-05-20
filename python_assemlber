@@ -1,0 +1,70 @@
+
+# 111 ac1c2c3c4c5c6 d1d2d3 j1j2j3
+#dest = comp; jump
+
+jump_string={"JGT":"001","JEQ":"010","JGE":"011","JLT":"100","JNE":"101","JLE":"110","JMP":"111"}
+
+def parser(instr):
+	global instr_dest, instr_comp, instr_jump, instr_type,
+	#handle A
+	if(instr[0]="@"):
+		instr_type="A"
+		A_res = "0" + {"0:15b"}.format(int(bin(instr[1:])[2:]))
+		return 
+
+	#prepare variables for C instruction
+	eq = instr.find("=",0,len(instr))
+	semicol = instr.find(";",0,len(instr))
+	
+	#getting comp part of expression
+	if semicol>0:
+		comp = instr[eq:semicol]
+	else:
+		comp=instr[eq:]
+	
+	#destination ADM 
+	if(instr.find("A",0,eq)>0):
+		instr_dest[0]="1"
+	if(instr.find("D",0,eq)>0):
+		instr_dest[1] = "1"
+	if(instr.find("M",0,eq)>0):
+		instr_dest= instr_dest + "1"
+	else:
+		instr_dest=instr_dest+"0"
+	
+	# Jump
+	if semicol>0:
+		instr_jump=jump_string[instr[:3]]
+
+	#computation ADM +-&| ADM
+	if(comp.find("M",0,len(instr))>0):
+		instr_a="1"
+
+	#check if only one input
+	if((comp.find("M")>0 || comp.find("A")>0) != comp.find("D")>0):
+		if(comp.find("D")>0):
+			
+
+
+
+
+def code:
+	if(instr_type=="A"):
+		return A_res
+	else:
+		return "111" + instr_a + instr_comp + instr_dest + instr_jump
+
+def main():
+	global instr_type, A_res, instr_dest, instr_comp, instr_jump,instr_a
+	instr_type=""
+	A_res=""
+	instr_dest="000"
+	instr_comp="000000"
+	instr_jump="000"
+	instr_a="0"
+	load file.asm
+	load output.hack
+	while line.len()<2:
+		line = readline.trim()	
+	parser(line)
+	output.writeline = code()
