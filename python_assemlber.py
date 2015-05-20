@@ -103,15 +103,23 @@ def code:
 
 def main():
 	global instr_type, A_res, instr_dest, instr_comp, instr_jump,instr_a
-	instr_type="C"
-	A_res=""
-	instr_dest="000"
-	instr_comp="000000"
-	instr_jump="000"
-	instr_a="0"
-	asm_in = open(file.asm,"r")
-	load output.hack
-	while line.len()<2:
-		line = readline.trim()	
-	parser(line)
-	output.writeline = code()
+	open(file.hack,"w+").delete()
+	hack_out = open(file.hack,"rw+")
+	
+	with open(file.asm,"r") as asm_in:
+		instr_type="C"
+		A_res=""
+		instr_dest="000"
+		instr_comp="000000"
+		instr_jump="000"
+		instr_a="0"
+		for rline in asm_in
+			while line.len()<2:
+				line = rline.translate(None, " ")
+				comment = rline.find("//")
+				if (comment>0):
+					line=rline[:comment]
+				parser(line)
+				hack_out.write = code()
+	hack_out.close()
+	asm_in.close()
